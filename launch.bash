@@ -163,9 +163,11 @@ case "$COMMAND" in
     run)
       trap remove_pid EXIT SIGINT SIGTERM
       ensure_cluster
-      EXECUTE=execute_single
 
-      create_database
+      if [ "$DATABASE_SERVER_ONLY" != "true" ]; then
+        EXECUTE=execute_single
+        create_database
+      fi
       exec $PGBIN -c config_file=$PGCFG/postgresql.conf
       ;;
     create-database)
